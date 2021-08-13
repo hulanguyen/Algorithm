@@ -1,13 +1,9 @@
 
+let totalTime1 = SortCompare.timeRandomInput(alg: .selectionSort, length: 1000, numOfArr: 100)
+let totalTime2 = SortCompare.timeRandomInput(alg: .insertionSort, length: 1000, numOfArr: 100)
 
+print("time for execute selection sort: \(totalTime1)")
+print("Time for execute insertion sort: \(totalTime2)")
 
-let string = "sortexample"
-var arr = string.uppercased().map({$0})
-//let sortObject = SelectionSort<Character>()
-//sortObject.sort(arr: &arr)
-//print(arr)
+print ("\(Alg.insertionSort.description) is faster \(totalTime2 / totalTime1) than \(Alg.selectionSort.description)")
 
-
-let insertSort = InsertionSort<Character>()
-insertSort.sort(arr: &arr)
-print(arr)
