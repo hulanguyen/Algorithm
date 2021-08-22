@@ -30,6 +30,7 @@ extension SortTemplate {
     }
 }
 
+//MARK: Selection sort
 public struct SelectionSort<Item: Comparable>: SortTemplate {
     
    public typealias T = Item
@@ -51,8 +52,7 @@ public struct SelectionSort<Item: Comparable>: SortTemplate {
     }
 }
 
-//Insertion sort
-
+//MARK: Insertion sort
 public struct InsertionSort<Item: Comparable>: SortTemplate {
     public typealias T = Item
     public init() {}
@@ -68,9 +68,35 @@ public struct InsertionSort<Item: Comparable>: SortTemplate {
     }
 }
 
+//MARK: Shell sort
+
+public struct Shellsort<Item: Comparable>: SortTemplate {
+    public typealias T = Item
+    public init() {}
+    
+    public func sort(arr: inout [Item]) {
+        let n = arr.count
+        var h = 1
+        while h < n/3 { h = 3*h + 1}
+        while h >= 1 {
+            for i in h..<n {
+                for j in stride(from: i, through: h, by: -h) {
+                    if j - h >= 0, less(val1: arr[j - h], val2: arr[j]) {
+                        exch(arr: &arr, i: j, j: j - h)
+                    }
+                }
+                
+            }
+            h = h/3
+        }
+    }
+}
+
+//MARK: Sort compare
 public enum Alg {
     case selectionSort
     case insertionSort
+    case shellSort
 }
 
 extension Alg: CustomStringConvertible {
@@ -80,6 +106,8 @@ extension Alg: CustomStringConvertible {
             return "Selection sort"
         case .insertionSort:
             return "Insertion sort"
+        case .shellSort:
+            return "Shell sort"
         }
     }
 }
@@ -95,13 +123,13 @@ public struct TimerCounter<T: Comparable> {
         case .insertionSort:
            let sortAlg = InsertionSort<T>()
             sortAlg.sort(arr: &arr)
+        case .shellSort:
+            let sortAlg = Shellsort<T>()
+            sortAlg.sort(arr: &arr)
         }
         return Date().timeIntervalSince1970 - startTime
     }
 }
-
-
-// sort compare
 
 public struct SortCompare {
    public static func timeRandomInput(alg: Alg, length: Int, numOfArr: Int) -> TimeInterval{
